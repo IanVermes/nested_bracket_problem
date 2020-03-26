@@ -7,6 +7,24 @@ import typing as t
 import enum
 
 
+_ENCODED_BRACKET_MAP: t.Dict[str, int] = {
+    "(": 1,
+    ")": 1,
+    "[": 2,
+    "]": 2,
+    "{": 3,
+    "}": 3,
+}
+_ENCODED_BRACKET_TYPE_MAP: t.Dict[str, int] = {
+    "(": 1,
+    "{": 1,
+    "[": 1,
+    "]": 2,
+    ")": 2,
+    "}": 2,
+}
+
+
 class Bracket(enum.Enum):
     ROUND = 1
     SQUARE = 2
@@ -15,7 +33,8 @@ class Bracket(enum.Enum):
     @classmethod
     def from_char(cls, char: str):
         """Get the Bracket enum corresponding to the char."""
-        pass
+        init_val: int = _ENCODED_BRACKET_MAP[char]
+        return cls(init_val)
 
 
 class BracketType(enum.Enum):
@@ -25,7 +44,8 @@ class BracketType(enum.Enum):
     @classmethod
     def from_char(cls, char: str):
         """Get the BracketType enum corresponding to the char."""
-        pass
+        init_val: int = _ENCODED_BRACKET_TYPE_MAP[char]
+        return cls(init_val)
 
 
 def solution(string: str) -> int:
