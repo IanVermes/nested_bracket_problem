@@ -76,13 +76,19 @@ def __solution(string: str) -> IsValid:
         # property of this function.
         if bracket_state is BracketState.OPEN:
             queue.put_nowait(bracket_group)
-        elif bracket_state is BracketState.CLOSED:
+        elif bracket_state is BracketState.CLOSED and not queue.empty():
             bracket_group_from_q = queue.get_nowait()
             if bracket_group_from_q == bracket_group:
                 continue
             else:
                 result = IsValid.NO
                 break
+        else:
+            # If the queue receives a get method call when the queue is empty, then
+            # the string has an invalid format: a CLOSED bracket preceding an OPEN
+            # bracket of the same group.
+            result = IsValid.NO
+            break
 
     else:
         # If the string is well structured then the queue will have emptied.
