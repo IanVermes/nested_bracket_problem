@@ -1,7 +1,18 @@
 import pytest
 from tests.conftest import create_params_from_yaml
 
-from questions.question_1 import BracketGroup, BracketState, is_odd
+from questions.question_1 import IsValid, BracketGroup, BracketState, is_odd
+
+
+@pytest.mark.parametrize(
+    "test_input,expected", [(IsValid.YES, 1), (IsValid.NO, 0)],
+)
+def test_Bracket_method_from_char(test_input, expected):
+    # When
+    actual = int(test_input)
+
+    # Then
+    assert actual == expected
 
 
 @pytest.mark.parametrize(

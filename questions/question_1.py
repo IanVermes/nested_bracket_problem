@@ -27,6 +27,11 @@ _ENCODED_BRACKET_STATE_MAP: t.Dict[str, int] = {
 }
 
 
+class IsValid(enum.IntEnum):
+    YES = 0
+    NO = 1
+
+
 class BracketGroup(enum.Enum):
     UNKNOWN = 0
     ROUND = 1
@@ -55,17 +60,15 @@ def is_odd(string: str) -> bool:
     return len(string) % 2 == 1
 
 
-def solution(string: str) -> int:
-    """Parse a structured string & return 0 if the string is properly nested, otherwise 1."""
-
+def __solution(string: str) -> IsValid:
     if is_odd(string):  # A structured string should have an even number of brackets.
-        return 1
+        return IsValid.NO
 
     queue: LifoQueue[BracketGroup] = LifoQueue(maxsize=len(string))
     for bracket_char in string:
         bracket_group = BracketGroup.from_char(bracket_char)
         if bracket_group is BracketGroup.UNKNOWN:
-            result = 1
+            result = IsValid.NO
             break
         bracket_state = BracketState.from_char(bracket_char)
 
@@ -78,13 +81,19 @@ def solution(string: str) -> int:
             if bracket_group_from_q == bracket_group:
                 continue
             else:
-                result = 1
+                result = IsValid.NO
                 break
+
     else:
         # If the string is well structured then the queue will have emptied.
         if queue.empty():
-            result = 0
+            result = IsValid.YES
         else:
-            result = 1
+            result = IsValid.NO
 
     return result
+
+
+def solution(string: str) -> int:
+    """Parse a structured string & return 0 if the string is properly nested, otherwise 1."""
+    return int(__solution(string))
