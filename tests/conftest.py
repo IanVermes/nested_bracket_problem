@@ -28,9 +28,14 @@ def create_params_from_yaml():
         else:
             raise KeyError("Unexpected key in yaml. Got {key!r}")
         for test_input in strings:
-            one_param = pytest.param(
-                test_input, expected_output, id=f"{key}-len(s)={len(test_input)}"
-            )
+            if len(test_input) > 50:
+                param_name = f" {key} {len(test_input)=} test_input='LONGSTRING!' "
+            else:
+                param_name = f" {key} {len(test_input)=} {test_input=} "
+            one_param = pytest.param(test_input, expected_output, id=param_name,)
             parameters.append(one_param)
+
+    for parameter in parameters:
+        print(f"{parameter=}")
 
     return (param_args, parameters)
