@@ -48,6 +48,14 @@ class BracketType(enum.Enum):
         return cls(init_val)
 
 
+def is_odd(string: str) -> bool:
+    return None
+
+
 def solution(string: str) -> int:
     """Parse a structured string & return 0 if the string is properly nested, otherwise 1."""
-    return None
+
+    if is_odd(string):  # A structured string should have an even number of brackets.
+        return 1
+    else:
+        return 0
