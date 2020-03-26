@@ -12,6 +12,7 @@ black = "^19.10b0"
 mypy = "^0.770"
 ipython = "^7.13.0"
 pytest = "^5.4.1"
+pyyaml = "^5.3.1"
 
 
 [build-system]
