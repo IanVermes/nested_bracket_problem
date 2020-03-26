@@ -39,6 +39,20 @@ VALID_BRACKET_PAIRS: t_BracketPairs = [
 INVALID_BRACKET_PAIRS: t_BracketPairs = __make_invalid_bracket_pairs(
     VALID_BRACKET_PAIRS
 )
+__SORTING_INDEX_BY_GROUP: t.Dict[str, int] = {
+    char: i for i, char in enumerate("{}[]()")
+}
+__SORTING_INDEX_BY_STATE: t.Dict[str, int] = {
+    char: i for i, char in enumerate("}]){[(")
+}
+__REFLECT_MAP: t.Dict[str, str] = {
+    "{": "}",
+    "}": "{",
+    "[": "]",
+    "]": "[",
+    "(": ")",
+    ")": "(",
+}
 
 
 class StringStrategy:
@@ -136,29 +150,90 @@ def build_string(length: int, allow_mistakes: bool = False) -> str:
     return string
 
 
+def reverse(string: str) -> str:
+    """Reverse a string."""
+    return string[::-1]
+
+
+def reflect(string: str) -> str:
+    new_string = []
+    for char in reverse(string):
+        reflected_char = __REFLECT_MAP[char]
+        new_string.append(reflected_char)
+    return "".join(new_string)
+
+
 def truncate(string: str, by: int) -> str:
     """Truncate end of string by a specific number of characters."""
     negative_index = abs(by) * -1
     return string[:negative_index]
 
 
+def substitute(string: str) -> str:
+    """Substitute a single character at random for an invalid character."""
+    index = random.randint(0, len(string) - 1)
+    if len(string) >= 1:
+        new_string = string[0:index] + "X" + string[index + 1 :]
+        return new_string
+    else:
+        return string
+
+
+def sort_by_state(string: str) -> str:
+    """Sort all brackets in a string by their open/closed state, de-structuring the string."""
+    indexed_string: t.List[t.Tuple[int, str]] = []
+    for char in string:
+        index = __SORTING_INDEX_BY_STATE.get(char, -1)
+        indexed_char: t.Tuple[int, str] = (index, char)
+        indexed_string.append(indexed_char)
+    indexed_string.sort()
+    sorted_string = "".join([char for _, char in indexed_string])
+    return sorted_string
+
+
+def sort_by_group(string: str) -> str:
+    """Sort all brackets in a string by their group."""
+    indexed_string: t.List[t.Tuple[int, str]] = []
+    for char in string:
+        index = __SORTING_INDEX_BY_GROUP.get(char, -1)
+        indexed_char: t.Tuple[int, str] = (index, char)
+        indexed_string.append(indexed_char)
+    indexed_string.sort()
+    sorted_string = "".join([char for _, char in indexed_string])
+    return sorted_string
+
+
 if __name__ == "__main__":
-    DATA: t.Dict[str, t.List[str]] = {}
+    DATA: t.Dict[str, t.List[t.Tuple[str, str]]] = {}
     step = 4
     assert step % 2 == 0
     max_length = 40
 
     # Add valid strings
-    DATA["valid"] = [build_string(l) for l in range(0, max_length, step)]
-    DATA["valid"].append("{[()()]}")  # Valid example from exam question PDF
+    valids: t.List[t.Tuple[str, str]] = []
+    for valid in (build_string(l) for l in range(0, max_length, step)):
+        basic_valid = (valid, "BASIC")
+        sorted_valid = (sort_by_group(valid), "GROUP_SORT")
+        reflected_valid = (reflect(valid), "REFLECT")
+        valids.extend([basic_valid, sorted_valid, reflected_valid])
+    DATA["valid"] = valids
+    DATA["valid"].append(("{[()()]}", "PDF"))  # Valid example from exam question PDF
 
     # Add invalid strings
-    DATA["invalid"] = [build_string(l, True) for l in range(2, max_length, step)]
-    more_invalids = [
-        truncate(s, 1) for s in (build_string(l) for l in range(2, max_length, step))
-    ]
-    DATA["invalid"].extend(list(more_invalids))  # Add strings with odd number of chars
-    DATA["invalid"].extend(["([)()]"])  # Invalid example from exam question PDF
+    invalids: t.List[t.Tuple[str, str]] = []
+    for invalid in (build_string(l, True) for l in range(2, max_length, step)):
+        invalids.append((invalid, "BASIC"))
+    for valid in (build_string(l) for l in range(2, max_length, step)):
+        odd_length_invalid = (truncate(valid, 1), "ODD")
+        substituted_invalid = (substitute(valid), "SUB")
+        sorted_invalid = (sort_by_state(valid), "STATE_SORT")
+        reversed_invalid = (reverse(valid), "REVERSE")
+        invalids.extend(
+            [substituted_invalid, odd_length_invalid, sorted_invalid, reversed_invalid]
+        )
+
+    DATA["invalid"] = invalids
+    DATA["invalid"].append(("([)()]", "PDF"))  # Invalid example from exam question PDF
 
     # # Add big strings # TODO UNCOMMENT THIS BLOCK
     # big_length = 200_000
