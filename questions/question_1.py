@@ -28,6 +28,7 @@ _ENCODED_BRACKET_STATE_MAP: t.Dict[str, int] = {
 
 
 class BracketGroup(enum.Enum):
+    UNKNOWN = 0
     ROUND = 1
     SQUARE = 2
     CURLY = 3
@@ -35,7 +36,7 @@ class BracketGroup(enum.Enum):
     @classmethod
     def from_char(cls, char: str):
         """Get the BracketGroup enum corresponding to the char."""
-        init_val: int = _ENCODED_BRACKET_GROUP_MAP[char]
+        init_val: int = _ENCODED_BRACKET_GROUP_MAP.get(char, 0)
         return cls(init_val)
 
 
@@ -63,6 +64,9 @@ def solution(string: str) -> int:
     queue: LifoQueue[BracketGroup] = LifoQueue(maxsize=len(string))
     for bracket_char in string:
         bracket_group = BracketGroup.from_char(bracket_char)
+        if bracket_group is BracketGroup.UNKNOWN:
+            result = 1
+            break
         bracket_state = BracketState.from_char(bracket_char)
 
         # We don't need to allow for waiting and timeouts as the queue is a private

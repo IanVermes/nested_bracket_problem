@@ -13,6 +13,10 @@ from questions.question_1 import BracketGroup, BracketState, is_odd
         ("]", BracketGroup.SQUARE),
         ("(", BracketGroup.ROUND),
         (")", BracketGroup.ROUND),
+        ("a", BracketGroup.UNKNOWN),
+        ("x", BracketGroup.UNKNOWN),
+        ("<", BracketGroup.UNKNOWN),
+        ("", BracketGroup.UNKNOWN),
     ],
 )
 def test_Bracket_method_from_char(test_input, expected):
