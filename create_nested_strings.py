@@ -235,10 +235,15 @@ if __name__ == "__main__":
     DATA["invalid"] = invalids
     DATA["invalid"].append(("([)()]", "PDF"))  # Invalid example from exam question PDF
 
-    # # Add big strings # TODO UNCOMMENT THIS BLOCK
-    # big_length = 200_000
-    # DATA["valid"].append(build_string(big_length))
-    # DATA["invalid"].append(build_string(big_length, False))
-
     with open("strings.yaml", "w") as handle:
         yaml.safe_dump(DATA, handle)
+
+    # Add big strings to separate file
+    BIGDATA: t.Dict[str, t.List[t.Tuple[str, str]]] = {"valid": [], "invalid": []}
+    big_length = 200_000
+    BIGDATA["valid"].append((build_string(big_length), "BIG"))
+    BIGDATA["invalid"].append((build_string(big_length, True), "BIG"))
+    BIGDATA["invalid"].append(("{" * big_length, "BIG"))
+
+    with open("big_strings.yaml", "w") as handle:
+        yaml.safe_dump(BIGDATA, handle)
