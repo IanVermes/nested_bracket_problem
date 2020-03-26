@@ -155,8 +155,7 @@ if __name__ == "__main__":
     # Add invalid strings
     DATA["invalid"] = [build_string(l, True) for l in range(2, max_length, step)]
     more_invalids = [
-        truncate(s, 1)
-        for s in (build_string(l, True) for l in range(2, max_length, step))
+        truncate(s, 1) for s in (build_string(l) for l in range(2, max_length, step))
     ]
     DATA["invalid"].extend(list(more_invalids))  # Add strings with odd number of chars
     DATA["invalid"].extend(["([)()]"])  # Invalid example from exam question PDF
