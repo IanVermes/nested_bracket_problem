@@ -16,7 +16,8 @@ _ENCODED_BRACKET_MAP: t.Dict[str, int] = {
     "{": 3,
     "}": 3,
 }
-_ENCODED_BRACKET_TYPE_MAP: t.Dict[str, int] = {
+_ENCODED_BRACKET_STATE_MAP: t.Dict[str, int] = {
+    # 1 - OPEN, 2 - CLOSED
     "(": 1,
     "{": 1,
     "[": 1,
@@ -38,14 +39,14 @@ class Bracket(enum.Enum):
         return cls(init_val)
 
 
-class BracketType(enum.Enum):
+class BracketState(enum.Enum):
     OPEN = 1
     CLOSED = 2
 
     @classmethod
     def from_char(cls, char: str):
-        """Get the BracketType enum corresponding to the char."""
-        init_val: int = _ENCODED_BRACKET_TYPE_MAP[char]
+        """Get the BracketState enum corresponding to the char."""
+        init_val: int = _ENCODED_BRACKET_STATE_MAP[char]
         return cls(init_val)
 
 
@@ -62,13 +63,13 @@ def solution(string: str) -> int:
     queue: LifoQueue[Bracket] = LifoQueue(maxsize=len(string))
     for bracket_char in string:
         bracket_from_str = Bracket.from_char(bracket_char)
-        bracket_type = BracketType.from_char(bracket_char)
+        bracket_state = BracketState.from_char(bracket_char)
 
         # We don't need to allow for waiting and timeouts as the queue is a private
         # property of this function.
-        if bracket_type is BracketType.OPEN:
+        if bracket_state is BracketState.OPEN:
             queue.put_nowait(bracket_from_str)
-        elif bracket_type is BracketType.CLOSED:
+        elif bracket_state is BracketState.CLOSED:
             bracket_from_q = queue.get_nowait()
             if bracket_from_q == bracket_from_str:
                 continue

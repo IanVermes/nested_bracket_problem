@@ -1,7 +1,7 @@
 import pytest
 from tests.conftest import create_params_from_yaml
 
-from questions.question_1 import Bracket, BracketType, is_odd
+from questions.question_1 import Bracket, BracketState, is_odd
 
 
 @pytest.mark.parametrize(
@@ -29,20 +29,20 @@ def test_Bracket_method_from_char(test_input, expected):
 @pytest.mark.parametrize(
     "test_input,expected",
     [
-        ("{", BracketType.OPEN),
-        ("}", BracketType.CLOSED),
-        ("[", BracketType.OPEN),
-        ("]", BracketType.CLOSED),
-        ("(", BracketType.OPEN),
-        (")", BracketType.CLOSED),
+        ("{", BracketState.OPEN),
+        ("}", BracketState.CLOSED),
+        ("[", BracketState.OPEN),
+        ("]", BracketState.CLOSED),
+        ("(", BracketState.OPEN),
+        (")", BracketState.CLOSED),
     ],
 )
-def test_BracketType_method_from_char(test_input, expected):
+def test_BracketState_method_from_char(test_input, expected):
     # Given
     char = test_input
 
     # When
-    actual = BracketType.from_char(char)
+    actual = BracketState.from_char(char)
 
     # Then
     assert actual == expected
