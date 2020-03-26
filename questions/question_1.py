@@ -49,7 +49,7 @@ class BracketType(enum.Enum):
 
 
 def is_odd(string: str) -> bool:
-    return None
+    return len(string) % 2 == 1
 
 
 def solution(string: str) -> int:
@@ -58,4 +58,4 @@ def solution(string: str) -> int:
     if is_odd(string):  # A structured string should have an even number of brackets.
         return 1
     else:
-        return 0
+        return None
