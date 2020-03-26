@@ -2,6 +2,7 @@
 # -*- coding: utf8 -*-
 """Question 1: parse a string of brackets, validating its structure"""
 
+from queue import LifoQueue
 import typing as t
 
 import enum
@@ -57,5 +58,28 @@ def solution(string: str) -> int:
 
     if is_odd(string):  # A structured string should have an even number of brackets.
         return 1
+
+    queue: LifoQueue[Bracket] = LifoQueue(maxsize=len(string))
+    for bracket_char in string:
+        bracket_from_str = Bracket.from_char(bracket_char)
+        bracket_type = BracketType.from_char(bracket_char)
+
+        # We don't need to allow for waiting and timeouts as the queue is a private
+        # property of this function.
+        if bracket_type is BracketType.OPEN:
+            queue.put_nowait(bracket_from_str)
+        elif bracket_type is BracketType.CLOSED:
+            bracket_from_q = queue.get_nowait()
+            if bracket_from_q == bracket_from_str:
+                continue
+            else:
+                result = 1
+                break
     else:
-        return None
+        # If the string is well structured then the queue will have emptied.
+        if queue.empty():
+            result = 0
+        else:
+            result = 1
+
+    return result
