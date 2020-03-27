@@ -27,6 +27,11 @@ easily done by using [Poetry](https://python-poetry.org/docs/#installation)
    commands `pytest` or `mypy` cannot be found. Or you can do `python -m
    pytest`.
 
+## Usage
+
+As a convenience can invoke it from the CLI if you like with `python
+questions/question_1.py "STRING_VALUE"`. No argparse though as its out of scope.
+
 
 ## Functional testing
 

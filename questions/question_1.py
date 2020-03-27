@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-"""Question 1: parse a string of brackets, validating its structure"""
+"""Question 1: parse a string of brackets, validating its structure
+
+As convenience you can do `python questions/question_1.py "$STRING"`
+"""
 
 from queue import LifoQueue
 import typing as t
@@ -56,8 +59,14 @@ class BracketState(enum.Enum):
         return cls(init_val)
 
 
-def is_odd(string: str) -> bool:
-    return len(string) % 2 == 1
+def solution(string: str) -> int:
+    """Parse a structured string & return 0 if the string is properly nested, otherwise 1."""
+    if not isinstance(string, str):
+        msg = "Expected string got type={}"
+        raise TypeError(msg.format(type(string)))
+    else:
+        result = __solution(string)
+        return int(result)
 
 
 def __solution(string: str) -> IsValid:
@@ -92,7 +101,6 @@ def __solution(string: str) -> IsValid:
             # bracket of the same group.
             result = IsValid.NO
             break
-
     else:
         # If the string is well structured then the queue will have emptied.
         if queue.empty():
@@ -103,6 +111,22 @@ def __solution(string: str) -> IsValid:
     return result
 
 
-def solution(string: str) -> int:
-    """Parse a structured string & return 0 if the string is properly nested, otherwise 1."""
-    return int(__solution(string))
+def is_odd(string: str) -> bool:
+    return len(string) % 2 == 1
+
+
+if __name__ == "__main__":
+    import sys
+
+    cli_string = sys.argv[1]
+    try:
+        result = solution(cli_string)
+    except Exception as err:
+        # Forgive the bare exception. A bit of a no-no.
+        print("solution({arg_}) -> {err}".format(arg_=repr(cli_string), err=repr(err)))
+        result = 1
+    else:
+        print(
+            "solution({arg_}) -> {result}".format(arg_=repr(cli_string), result=result)
+        )
+    exit(result)
