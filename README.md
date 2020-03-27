@@ -1,6 +1,6 @@
 # informetis_tech_exam
 
-Parse a string with nested brackets
+Parse a string with nested brackets.
 
 Tested on Python 3.8.2
 
@@ -37,7 +37,8 @@ They could be all in one file but it makes it difficult to browse the smaller
 
 ## Static typing
 
-`mypy` was used to type check (hence no type checking related unit tests)
+Functions and classes are type hinted. `mypy` was used to type check (hence no
+type checking related unit tests).
 
 ## Code style
 
@@ -49,11 +50,11 @@ They could be all in one file but it makes it difficult to browse the smaller
 * Calls of `len(string)` are O(1)
 * I call `queue.empty()` for every character in the iteration - this seems to be
   an O(1) operation after some testing
-  ```ipython
-  In [50]: %timeit q_small.empty()  # queue is full and has size 1_000
+  ```python
+  In [50]: %timeit lifo_q_small.empty()  # queue is full and has size 1_000
   582 ns ± 1.88 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
 
-  In [51]: %timeit q_big.empty()  # queue is full and has size 10_000_000
+  In [51]: %timeit lifo_q_big.empty()  # queue is full and has size 10_000_000
   606 ns ± 2.64 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
   ```
   I also considered catching `queue.Empty` exceptions instead of checking if the
