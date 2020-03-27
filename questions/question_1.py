@@ -7,7 +7,7 @@ import typing as t
 
 import enum
 
-
+_MAX_LENGTH = 200_000
 _ENCODED_BRACKET_GROUP_MAP: t.Dict[str, int] = {
     "(": 1,
     ")": 1,
@@ -61,6 +61,9 @@ def is_odd(string: str) -> bool:
 
 
 def __solution(string: str) -> IsValid:
+    if len(string) > _MAX_LENGTH:
+        return IsValid.NO
+
     if is_odd(string):  # A structured string should have an even number of brackets.
         return IsValid.NO
 

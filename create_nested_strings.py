@@ -242,6 +242,7 @@ if __name__ == "__main__":
     BIGDATA: t.Dict[str, t.List[t.Tuple[str, str]]] = {"valid": [], "invalid": []}
     big_length = 200_000
     BIGDATA["valid"].append((build_string(big_length), "BIG"))
+    BIGDATA["invalid"].append((build_string(big_length + 2), "TOO_BIG"))
     BIGDATA["invalid"].append((build_string(big_length, True), "BIG"))
     BIGDATA["invalid"].append(("{" * big_length, "BIG"))
 
