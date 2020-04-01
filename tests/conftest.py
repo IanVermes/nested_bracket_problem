@@ -29,9 +29,9 @@ def create_params_from_yaml():
             data = yaml.safe_load(handle)
         for key, strings in data.items():
             if key.lower() == "valid":
-                expected_output = 0
-            elif key.lower() == "invalid":
                 expected_output = 1
+            elif key.lower() == "invalid":
+                expected_output = 0
             else:
                 raise KeyError("Unexpected key in yaml. Got {key!r}")
             for test_input, param_condion in strings:

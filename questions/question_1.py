@@ -31,8 +31,8 @@ _ENCODED_BRACKET_STATE_MAP: t.Dict[str, int] = {
 
 
 class IsValid(enum.IntEnum):
-    YES = 0
-    NO = 1
+    NO = 0
+    YES = 1
 
 
 class BracketGroup(enum.Enum):

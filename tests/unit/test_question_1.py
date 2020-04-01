@@ -5,7 +5,7 @@ from questions.question_1 import IsValid, BracketGroup, BracketState, is_odd
 
 
 @pytest.mark.parametrize(
-    "test_input,expected", [(IsValid.YES, 0), (IsValid.NO, 1)],
+    "test_input,expected", [(IsValid.YES, 1), (IsValid.NO, 0)],
 )
 def test_IsValid_can_be_cast_to_expected_int(test_input, expected):
     # When
