@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "informetis_tech_exam"
+name = "nested_breacket_problem"
 version = "0.1.0"
 description = "Parse a string with nested brackets"
 authors = ["Ian Vermes <ian.vermes@gmail.com>"]
